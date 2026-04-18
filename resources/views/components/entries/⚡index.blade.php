@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Entry;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
