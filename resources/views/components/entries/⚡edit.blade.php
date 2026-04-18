@@ -16,6 +16,8 @@ new class extends Component {
 
     public function mount(Entry $entry)
     {
+        $this->authorize('workWith', $this->entry);
+
         $this->entry = $entry;
 
         // preload
@@ -26,6 +28,8 @@ new class extends Component {
 
     public function update()
     {
+        $this->authorize('workWith', $this->entry);
+
         $validated = $this->validate([
             'title' => 'nullable|min:3',
             'content' => 'required|min:3',

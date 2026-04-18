@@ -14,7 +14,7 @@ new class extends Component {
     #[Computed]
     public function entries()
     {
-        return Entry::with('user')->latest()->paginate(4);
+        return auth()->user()->entries()->latest()->paginate(4);
     }
 };
 ?>

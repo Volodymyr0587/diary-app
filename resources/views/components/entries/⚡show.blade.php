@@ -9,11 +9,15 @@ new class extends Component {
 
     public function mount(Entry $entry)
     {
+        $this->authorize('workWith', $this->entry);
+
         $this->entry = $entry;
     }
 
     public function delete()
     {
+        $this->authorize('workWith', $this->entry);
+
         $this->entry->delete();
 
         Flux::toast(variant: 'success', text: __('Record deleted.'));
