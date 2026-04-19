@@ -49,27 +49,33 @@ class DashboardController extends Controller
     private function getMoodSummary(?string $mood, $percentages): string
     {
         if (!$mood) {
-            return 'Поки що замало записів для аналізу 📝';
+            return 'There are not enough records to analyze yet 📝';
         }
 
         $percent = $percentages[$mood] ?? 0;
 
         return match ($mood) {
             'happy' => $percent > 60
-            ? 'Ти на хвилі позитиву 😄 Так тримати!'
-            : 'В цілому все добре, але бувають різні дні 🙂',
+            ? 'You\'re consistently feeling good 😄 That\'s a great sign!'
+            : 'Overall things look positive, with some natural ups and downs 🙂',
 
             'sad' => $percent > 60
-            ? 'Схоже, зараз непростий період 😔 Можливо варто трохи відпочити'
-            : 'Іноді буває сумно, і це нормально 💙',
-
-            'neutral' => 'Стабільний стан — без сильних коливань 😌',
+            ? 'This looks like a tough period 😔 Try to give yourself some care and rest'
+            : 'There are some sad moments, which is completely normal 💙',
 
             'angry' => $percent > 40
-            ? 'Є накопичене напруження 😠 Спробуй дати собі розрядку'
-            : 'Час від часу зʼявляється роздратування 😐',
+            ? 'There might be built-up tension 😠 Maybe it\'s time to release it somehow'
+            : 'Occasional frustration shows up, but it\'s under control 😐',
 
-            default => 'Цікавий мікс настроїв 🤔',
+            'calm' => $percent > 60
+            ? 'You\'re in a very balanced and peaceful state 😌'
+            : 'There\'s a good level of calmness in your days 🌿',
+
+            'excited' => $percent > 50
+            ? 'Lots of energy and excitement ⚡ Things must be interesting!'
+            : 'Moments of excitement are bringing some spark ✨',
+
+            default => 'You have a diverse emotional landscape 🤔',
         };
     }
 }
