@@ -25,10 +25,17 @@ new class extends Component {
         return $this->redirectRoute('entries.index', navigate: true);
     }
 
+    public function render()
+    {
+        $title = $this->entry->title ? $this->entry->title : 'No title';
+        return $this->view()
+            ->title($title);
+    }
+
 };
 ?>
 
-<div class="max-w-3xl mx-auto space-y-6">
+<div class="flex max-w-3xl mx-auto flex-1 flex-col gap-4 pt-6 rounded-xl">
 
     {{-- HEADER --}}
     <div class="flex justify-between items-center">
@@ -37,10 +44,9 @@ new class extends Component {
         </h1>
 
         <div class="flex gap-2">
-            <flux:button wire:navigate href="{{ route('entries.edit', $entry) }}">Edit</flux:button>
-            <!-- <form method="POST" wire:submit.prevent="delete">
-                <flux:button type="submit" variant="danger">Delete</flux:button>
-            </form> -->
+            <flux:button wire:navigate href="{{ route('entries.edit', $entry) }}" variant="primary">
+                Edit
+            </flux:button>
 
             <flux:modal.trigger name="delete-entry">
                 <flux:button variant="danger">Delete</flux:button>

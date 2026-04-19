@@ -22,7 +22,7 @@ new class extends Component {
 
         $user->entries()->create($validated);
 
-        $this->reset(['title', 'content', 'mood']);
+        // $this->reset(['title', 'content', 'mood']);
 
         Flux::toast(variant: 'success', text: __('Record created.'));
 
@@ -32,7 +32,7 @@ new class extends Component {
 };
 ?>
 
-<div class="flex max-w-3xl mx-auto flex-1 flex-col gap-4 rounded-xl">
+<div class="flex max-w-3xl mx-auto flex-1 flex-col gap-4 pt-6 rounded-xl">
 
     <h2>Write down your thoughts</h2>
 
@@ -69,8 +69,11 @@ new class extends Component {
         </div>
 
         {{-- BUTTON --}}
-        <div>
-            <flux:button type="submit">
+        <div class="flex justify-end gap-x-2">
+            <flux:button :href="route('entries.index')">
+                Cancel
+            </flux:button>
+            <flux:button type="submit" variant="primary">
                 Create
             </flux:button>
         </div>

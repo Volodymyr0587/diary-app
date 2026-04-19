@@ -43,10 +43,17 @@ new class extends Component {
         return $this->redirectRoute('entries.show', $this->entry, navigate: true);
     }
 
+    public function render()
+    {
+        $title = $this->entry->title ? $this->entry->title : 'No title';
+        return $this->view()
+            ->title('Edit: ' . $title);
+    }
+
 };
 ?>
 
-<div class="flex max-w-3xl mx-auto flex-1 flex-col gap-4">
+<div class="flex max-w-3xl mx-auto flex-1 flex-col gap-4 pt-6 rounded-xl">
 
     <h2>Edit entry</h2>
 
@@ -81,12 +88,11 @@ new class extends Component {
         </div>
 
         {{-- BUTTON --}}
-        <div class="flex gap-2">
-            <flux:button type="submit">
+        <div class="flex justify-end gap-x-2">
+            <flux:button href="{{ route('entries.show', $entry) }}" wire:navigate>Cancel</flux:button>
+            <flux:button type="submit" variant="primary">
                 Update
             </flux:button>
-
-            <flux:button href="{{ route('entries.show', $entry) }}" wire:navigate variant="ghost">Cancel</flux:button>
         </div>
 
     </form>

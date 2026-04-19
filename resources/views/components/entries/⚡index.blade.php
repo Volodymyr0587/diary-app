@@ -4,9 +4,10 @@ use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Title;
 
 
-new class extends Component {
+new #[Title('Entries')] class extends Component {
 
     use WithPagination;
 
@@ -18,13 +19,13 @@ new class extends Component {
 };
 ?>
 
-<div class="max-w-3xl mx-auto p-6 space-y-6">
+<div class="flex max-w-3xl mx-auto flex-1 flex-col gap-4 pt-6 rounded-xl">
 
     {{-- HEADER --}}
     <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold">My Entries</h1>
 
-        <flux:button href="{{ route('entries.create') }}" icon:trailing="pencil-square">
+        <flux:button href="{{ route('entries.create') }}" variant="primary" icon:trailing="pencil-square">
             + New Entry
         </flux:button>
     </div>
