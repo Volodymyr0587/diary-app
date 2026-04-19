@@ -1,55 +1,50 @@
 <?php
 
-use App\Models\Entry;
 use App\Enums\Mood;
+use App\Livewire\Forms\EntryForm;
+use App\Models\Entry;
 use Flux\Flux;
 use Livewire\Component;
 
 new class extends Component {
 
-
+    public EntryForm $form;
     public Entry $entry;
-
-    public $title;
-    public $content;
-    public $mood;
 
     public function mount(Entry $entry)
     {
-        $this->authorize('workWith', $this->entry);
+        $this->authorize('workWith', $entry);
 
         $this->entry = $entry;
 
-        // preload
-        $this->title = $entry->title;
-        $this->content = $entry->content;
-        $this->mood = $entry->mood?->value;
+        $this->form->setEntry($entry);
     }
 
     public function update()
     {
         $this->authorize('workWith', $this->entry);
 
-        $validated = $this->validate([
-            'title' => 'nullable|min:3',
-            'content' => 'required|min:3',
-            'mood' => ['nullable', 'in:' . collect(Mood::cases())->pluck('value')->join(',')],
-        ]);
+        $this->form->save();
 
-        $this->entry->update($validated);
+        Flux::toast(
+            variant: 'success',
+            text: __('Record updated.')
+        );
 
-        Flux::toast(variant: 'success', text: __('Record updated.'));
-
-        return $this->redirectRoute('entries.show', $this->entry, navigate: true);
+        return $this->redirectRoute(
+            'entries.show',
+            $this->entry,
+            navigate: true
+        );
     }
 
     public function render()
     {
-        $title = $this->entry->title ? $this->entry->title : 'No title';
+        $title = $this->entry->title ?: 'No title';
+
         return $this->view()
             ->title('Edit: ' . $title);
     }
-
 };
 ?>
 
@@ -62,21 +57,21 @@ new class extends Component {
         {{-- TITLE --}}
         <div>
             <flux:label>Title</flux:label>
-            <input type="text" wire:model="title" class="w-full border rounded-lg p-2">
-            @error('title') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            <input type="text" wire:model="form.title" class="w-full border rounded-lg p-2">
+            @error('form.title') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
         {{-- CONTENT --}}
         <div>
             <flux:label>Content</flux:label>
-            <textarea wire:model="content" rows="6" class="w-full border rounded-lg p-2"></textarea>
-            @error('content') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            <textarea wire:model="form.content" rows="6" class="w-full border rounded-lg p-2"></textarea>
+            @error('form.content') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
         {{-- MOOD --}}
         <div>
             <flux:label>Mood</flux:label>
-            <flux:select wire:model="mood">
+            <flux:select wire:model="form.mood">
                 <flux:select.option value="">Select mood</flux:select.option>
                 @foreach(Mood::cases() as $m)
                     <flux:select.option value="{{ $m->value }}">
@@ -84,7 +79,7 @@ new class extends Component {
                     </flux:select.option>
                 @endforeach
             </flux:select>
-            @error('mood') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            @error('form.mood') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
         {{-- BUTTON --}}
