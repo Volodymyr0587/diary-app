@@ -44,13 +44,16 @@ new #[Title('Entries')] class extends Component {
         </flux:button>
     </div>
 
-    <div class="flex items-center gap-x-2">
+    {{-- Filter by date --}}
+    <div class="flex items-center gap-x-2 ml-auto">
         <flux:icon.calendar-days />
         <flux:separator vertical />
         <flux:input type="date" wire:model.live="date" max="2999-12-31" />
-        <flux:button wire:click="$set('date', null)">
-            Reset
-        </flux:button>
+        @if ($this->date)
+            <flux:button wire:click="$set('date', null)">
+                Reset
+            </flux:button>
+        @endif
     </div>
 
     {{-- LIST --}}
