@@ -17,7 +17,7 @@ class EntryForm extends Form
     public function rules()
     {
         return [
-            'title' => 'nullable|min:3',
+            'title' => 'nullable|min:3|max:255',
             'content' => 'required|min:3',
             'mood' => ['nullable', 'in:' . collect(Mood::cases())->pluck('value')->join(',')],
         ];
