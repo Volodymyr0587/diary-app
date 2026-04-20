@@ -61,7 +61,7 @@ new class extends Component {
 
         {{-- BUTTON --}}
         <div class="flex justify-end gap-x-2">
-            <flux:button :href="route('entries.index')">
+            <flux:button :href="route('entries.index')" wire:navigate>
                 Cancel
             </flux:button>
             <flux:button type="submit" variant="primary">

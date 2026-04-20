@@ -38,4 +38,19 @@ class Entry extends Model
             $q->whereDate('created_at', $date)
         );
     }
+
+    #[Scope]
+    public function search($query, ?string $search)
+    {
+        $search = trim($search);
+
+        if (!$search) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($search) {
+            $q->where('title', 'like', "%{$search}%")
+                ->orWhere('content', 'like', "%{$search}%");
+        });
+    }
 }
