@@ -85,36 +85,21 @@
                 </div>
                 <!-- MINI CHART -->
                 <div class="flex items-end gap-2 h-32 justify-center lg:justify-start">
-                    <div class="flex flex-col items-center justify-end h-full">
-                        <div class="w-24 bg-green-400 rounded-sm transition-all duration-500"
-                            style="height: {{ min(100, max(0, $moodPercentages['happy'])) }}%">
-                        </div>
-                        <span class="mt-2 text-xs">😄 Happy</span>
-                    </div>
-                    <div class="flex flex-col items-center justify-end h-full">
-                        <div class="w-24 bg-yellow-400 rounded-sm transition-all duration-500"
-                            style="height: {{ min(100, max(0, $moodPercentages['sad'])) }}%">
-                        </div>
-                        <span class="mt-2 text-xs">😔 Sad</span>
-                    </div>
-                    <div class="flex flex-col items-center justify-end h-full">
-                        <div class="w-24 bg-red-400 rounded-sm transition-all duration-500"
-                            style="height: {{ min(100, max(0, $moodPercentages['angry'])) }}%">
-                        </div>
-                        <span class="mt-2 text-xs">😠 Angry</span>
-                    </div>
-                    <div class="flex flex-col items-center justify-end h-full">
-                        <div class="w-24 bg-blue-400 rounded-sm transition-all duration-500"
-                            style="height: {{ min(100, max(0, $moodPercentages['calm'])) }}%">
-                        </div>
-                        <span class="mt-2 text-xs">😌 Calm</span>
-                    </div>
-                    <div class="flex flex-col items-center justify-end h-full">
-                        <div class="w-24 bg-purple-400 rounded-sm transition-all duration-500"
-                            style="height: {{ min(100, max(0, $moodPercentages['excited'])) }}%">
-                        </div>
-                        <span class="mt-2 text-xs">🤩 Excited</span>
-                    </div>
+                    @foreach([
+                            ['happy', 'bg-green-400', '😄', 'Happy'],
+                            ['sad', 'bg-yellow-400', '😢', 'Sad'],
+                            ['angry', 'bg-blue-400', '😡', 'Angry'],
+                            ['calm', 'bg-red-400', '😌', 'Calm'],
+                            ['excited', 'bg-purple-400', '🤩', 'Excited'],
+                        ] as [$key, $color, $emoji, $label])
+
+                            <x-mood-bar 
+                                :value="$moodPercentages[$key] ?? 0" 
+                                :color="$color" 
+                                :emoji="$emoji" 
+                                :label="$label" 
+                            />
+                    @endforeach                    
                 </div>
             </div>
         </div>
