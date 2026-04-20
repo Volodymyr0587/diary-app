@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Mood;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -26,5 +27,15 @@ class Entry extends Model
         return [
             'mood' => Mood::class,
         ];
+    }
+
+    #[Scope]
+    public function filterByDate($query, $date)
+    {
+        return $query->when(
+            $date,
+            fn($q) =>
+            $q->whereDate('created_at', $date)
+        );
     }
 }

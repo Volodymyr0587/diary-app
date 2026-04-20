@@ -11,11 +11,25 @@ new #[Title('Entries')] class extends Component {
 
     use WithPagination;
 
+    public $date = null;
+
     #[Computed]
     public function entries()
     {
-        return auth()->user()->entries()->latest()->paginate(4);
+        return auth()->user()
+            ->entries()
+            ->filterByDate($this->date)
+            ->latest()->paginate(4);
     }
+
+    public function updatingDate(): void
+    {
+        $this->resetPage();
+    }
+
+    protected $queryString = [
+        'date' => ['except' => ''],
+    ];
 };
 ?>
 
@@ -25,8 +39,17 @@ new #[Title('Entries')] class extends Component {
     <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold">My Entries</h1>
 
-        <flux:button href="{{ route('entries.create') }}" variant="primary" icon:trailing="pencil-square">
+        <flux:button href="{{ route('entries.create') }}" wire:navigate variant="primary" icon:trailing="pencil-square">
             + New Entry
+        </flux:button>
+    </div>
+
+    <div class="flex items-center gap-x-2">
+        <flux:icon.calendar-days />
+        <flux:separator vertical />
+        <flux:input type="date" wire:model.live="date" max="2999-12-31" />
+        <flux:button wire:click="$set('date', null)">
+            Reset
         </flux:button>
     </div>
 
