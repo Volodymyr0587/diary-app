@@ -66,6 +66,8 @@ new #[Title('Entries')] class extends Component {
         </div>
     </div>
 
+    <flux:separator />
+
     {{-- Search and Filter by date--}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div class="flex items-center gap-x-2">
