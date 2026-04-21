@@ -67,7 +67,7 @@
                         {{ $summary }}
                     </p>
 
-                    @if($dominantMood)
+                    @if ($dominantMood)
                         <div class="text-sm text-neutral-500">
                             Dominant mood:
                             <span @class([
@@ -85,21 +85,21 @@
                 </div>
                 <!-- MINI CHART -->
                 <div class="flex items-end gap-2 h-32 justify-center lg:justify-start">
-                    @foreach([
-                            ['happy', 'bg-green-400', '😄', 'Happy'],
-                            ['sad', 'bg-yellow-400', '😢', 'Sad'],
-                            ['angry', 'bg-blue-400', '😡', 'Angry'],
-                            ['calm', 'bg-red-400', '😌', 'Calm'],
-                            ['excited', 'bg-purple-400', '🤩', 'Excited'],
-                        ] as [$key, $color, $emoji, $label])
-
-                            <x-mood-bar 
-                                :value="$moodPercentages[$key] ?? 0" 
-                                :color="$color" 
-                                :emoji="$emoji" 
-                                :label="$label" 
-                            />
-                    @endforeach                    
+                    @foreach ([
+                                ['happy', 'bg-green-400', '😄', 'Happy', 0],
+                                ['sad', 'bg-yellow-400', '😢', 'Sad', 100],
+                                ['angry', 'bg-blue-400', '😡', 'Angry', 200],
+                                ['calm', 'bg-red-400', '😌', 'Calm', 300],
+                                ['excited', 'bg-purple-400', '🤩', 'Excited', 400]
+                            ]
+                        as [$key, $color, $emoji, $label, $delay])
+                        <x-mood-bar 
+                        :value="$moodPercentages[$key] ?? 0" 
+                        :color="$color" 
+                        :emoji="$emoji" 
+                        :label="$label"
+                        :delay="$delay" />
+                    @endforeach
                 </div>
             </div>
         </div>
