@@ -6,6 +6,7 @@ use App\Enums\Mood;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class Entry extends Model
 {
@@ -13,6 +14,7 @@ class Entry extends Model
     protected $fillable = [
         'user_id',
         'title',
+        'slug',
         'content',
         'mood',
     ];
@@ -52,5 +54,51 @@ class Entry extends Model
             $q->where('title', 'like', "%{$search}%")
                 ->orWhere('content', 'like', "%{$search}%");
         });
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Entry $entry) {
+            $entry->slug = $entry->generateUniqueSlug();
+        });
+
+        static::updating(function (Entry $entry) {
+            if ($entry->isDirty('title') || $entry->isDirty('content')) {
+                $entry->slug = $entry->generateUniqueSlug();
+            }
+        });
+    }
+
+    protected function generateUniqueSlug(): string
+    {
+        // if title - make slug from it, else take first words from content
+        $base = $this->title
+            ? $this->title
+            : Str::words(strip_tags($this->content), 8, '');
+
+        $slug = Str::slug($base);
+
+        if (empty($slug)) {
+            $slug = 'entry-' . uniqid();
+        }
+
+        return $this->makeSlugUnique($slug);
+    }
+
+    protected function makeSlugUnique(string $slug): string
+    {
+        $original = $slug;
+        $count = 1;
+
+        while (
+            static::where('slug', $slug)
+                ->when($this->exists, fn($q) => $q->where('id', '!=', $this->id))
+                ->exists()
+        ) {
+            $slug = "{$original}-{$count}";
+            $count++;
+        }
+
+        return $slug;
     }
 }

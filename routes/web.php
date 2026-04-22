@@ -14,9 +14,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::livewire('/entries/create', 'pages::entry.create')->name('entries.create');
 
-    Route::livewire('/entries/{entry}', 'pages::entry.show')->name('entries.show');
+    Route::livewire('/entries/{entry:slug}', 'pages::entry.show')->name('entries.show');
 
-    Route::livewire('/entries/{entry}/edit', 'pages::entry.edit')->name('entries.edit');
+    Route::livewire('/entries/{entry:slug}/edit', 'pages::entry.edit')->name('entries.edit');
 });
 
 require __DIR__ . '/settings.php';
