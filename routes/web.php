@@ -9,8 +9,9 @@ Route::view('/', 'welcome')->name('home');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-
     Route::livewire('/entries', 'pages::entry.index')->name('entries.index');
+
+    Route::livewire('/entries/trash', 'pages::entry.trash')->name('entries.trash');
 
     Route::livewire('/entries/create', 'pages::entry.create')->name('entries.create');
 

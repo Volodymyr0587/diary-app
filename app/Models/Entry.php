@@ -6,10 +6,12 @@ use App\Enums\Mood;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Entry extends Model
 {
+    use SoftDeletes;
 
     protected $fillable = [
         'user_id',
@@ -52,6 +54,32 @@ class Entry extends Model
 
         return $query->where(function ($q) use ($search) {
             $q->where('title', 'like', "%{$search}%")
+                ->orWhere('content', 'like', "%{$search}%");
+        });
+    }
+
+    #[Scope]
+    public function filterByDeletedAt($query, $date)
+    {
+        return $query->when(
+            $date,
+            fn($q) =>
+            $q->whereDate('deleted_at', $date)
+        );
+    }
+
+    #[Scope]
+    public function searchDeleted($query, ?string $search)
+    {
+        $search = trim($search);
+
+        if (!$search) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($search) {
+            $q->where('deleted_at', true)
+                ->where('title', 'like', "%{$search}%")
                 ->orWhere('content', 'like', "%{$search}%");
         });
     }

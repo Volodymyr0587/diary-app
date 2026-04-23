@@ -23,6 +23,10 @@
                         :current="request()->routeIs('entries.index')" wire:navigate>
                         {{ __('Entries') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="trash" :href="route('entries.trash')"
+                        :current="request()->routeIs('entries.trash')" wire:navigate>
+                        {{ __('Trash') }}
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 

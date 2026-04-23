@@ -17,4 +17,9 @@ class EntryPolicy
             ? Response::allow()
             : Response::denyWithStatus(404);
     }
+
+    public function forceDeleteAll(User $user): Response
+    {
+        return Response::allow();
+    }
 }
