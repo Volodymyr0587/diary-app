@@ -111,23 +111,40 @@ class Entry extends Model
             $slug = 'entry-' . uniqid();
         }
 
-        return $this->makeSlugUnique($slug);
+        return retry(3, function () use ($slug) {
+            return $this->makeSlugUnique($slug);
+        });
     }
 
     protected function makeSlugUnique(string $slug): string
     {
-        $original = $slug;
-        $count = 1;
+        $query = static::where('slug', 'like', "{$slug}%");
 
-        while (
-            static::where('slug', $slug)
-                ->when($this->exists, fn($q) => $q->where('id', '!=', $this->id))
-                ->exists()
-        ) {
-            $slug = "{$original}-{$count}";
-            $count++;
+        if ($this->exists) {
+            $query->where('id', '!=', $this->id);
         }
 
-        return $slug;
+        $existingSlugs = $query->pluck('slug');
+
+        if (!$existingSlugs->contains($slug)) {
+            return $slug;
+        }
+
+        $max = $existingSlugs
+            ->map(function ($existing) use ($slug) {
+                if ($existing === $slug) {
+                    return 0;
+                }
+
+                if (preg_match("/^{$slug}-(\d+)$/", $existing, $matches)) {
+                    return (int) $matches[1];
+                }
+
+                return null;
+            })
+            ->filter()
+            ->max();
+
+        return $slug . '-' . ($max + 1);
     }
 }
