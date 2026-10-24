@@ -7,7 +7,8 @@ use Livewire\WithPagination;
 use Livewire\Attributes\Title;
 
 
-new #[Title('Entries')] class extends Component {
+new #[Title('Entries')]
+    class extends Component {
 
     use WithPagination;
 
@@ -87,7 +88,7 @@ new #[Title('Entries')] class extends Component {
 
         @forelse($this->entries as $entry)
             <a href="{{ route('entries.show', $entry) }}" wire:navigate
-                class="block border rounded-xl p-4 hover:bg-gray-50 hover:text-gray-600 dark:text-gray-50 transition">
+                class="block border rounded-2xl p-5 bg-white dark:bg-neutral-900 border-gray-200 dark:border-neutral-800 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-neutral-800/80 hover:border-gray-300 dark:hover:border-neutral-700 hover:shadow-md transition-all duration-200">
 
                 {{-- TITLE --}}
                 <div class="font-semibold text-lg">
