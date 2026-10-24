@@ -69,7 +69,7 @@ new class extends Component {
 
                 <flux:text class="mt-2">
                     You're about to delete this entry.<br>
-                    This action cannot be reversed.
+                    However, you will be able to restore it later from the trash.
                 </flux:text>
             </div>
 
