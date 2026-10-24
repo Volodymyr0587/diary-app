@@ -22,10 +22,16 @@
                     <flux:sidebar.item icon="book-open" :href="route('entries.index')"
                         :current="request()->routeIs('entries.index')" wire:navigate>
                         {{ __('Entries') }}
+                        <span
+                            class="ml-1.5 border-2 rounded-lg px-2 ">{{ auth()->user()->entries()->withoutTrashed()->count() }}
+                        </span>
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="trash" :href="route('entries.trash')"
                         :current="request()->routeIs('entries.trash')" wire:navigate>
                         {{ __('Trash') }}
+                        <span
+                            class="ml-4 border-2 rounded-lg px-2 ">{{ auth()->user()->entries()->onlyTrashed()->count() }}
+                        </span>
                     </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
